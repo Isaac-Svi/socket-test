@@ -22,6 +22,7 @@
         const App = () => {
             const [word, setWord] = useState("")
 
+            // whenever word changes, we print it to console
             useEffect(() => {
                 console.log(word)
             }, [word])
@@ -38,10 +39,12 @@
                 socket.emit('word', "the word " + count++)
             }
 
-            return <div>
-                This is an app
-                <button onClick={sendWord}>send word</button>
+            return (
+                <div>
+                    This is an app
+                    <button onClick={sendWord}>send word</button>
                 </div>
+            )
         }
 
         ReactDOM.render(<App />, app)
