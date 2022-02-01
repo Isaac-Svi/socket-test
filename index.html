@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const socket = io()
+
+        let count = 0
+
+        const {useState, useEffect} = React
+
+        const App = () => {
+            const [word, setWord] = useState("")
+
+            useEffect(() => {
+                console.log(word)
+            }, [word])
+
+            useEffect(() => {
+                socket.on('word', setWord)
+
+                return () => {
+                    socket.off('word', setWord)
+                }
+            }, [])
+
+            const sendWord = () => {
+                socket.emit('word', "the word " + count++)
+            }
+
+            return <div>
+                This is an app
+                <button onClick={sendWord}>send word</button>
+                </div>
+        }
+
+        ReactDOM.render(<App />, app)
+    </script>
+</body>
+</html>
